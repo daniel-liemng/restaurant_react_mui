@@ -26,10 +26,31 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1.5),
     flex: 1,
   },
+  listRoot: {
+    marginTop: theme.spacing(1),
+    maxHeight: 450,
+    overflow: "auto",
+    "& li:hover": {
+      cursor: "pointer",
+      backgroundColor: "#e3e3e3",
+    },
+    "& li:hover .MuiButtonBase-root": {
+      display: "block",
+      color: "#000",
+    },
+    "& .MuiButtonBase-root": {
+      display: "none",
+    },
+    "& .MuiButtonBase-root:hover": {
+      backgroundColor: "transparent",
+    },
+  },
 }));
 
-const SearchFoodItems = () => {
+const SearchFoodItems = (props) => {
   const classes = useStyles();
+
+  const { addFoodItem } = props;
 
   const [foodItems, setFoodItems] = useState([]);
   const [searchKey, setSearchKey] = useState("");
@@ -66,7 +87,7 @@ const SearchFoodItems = () => {
           <SearchTwoToneIcon />
         </IconButton>
       </Paper>
-      <List>
+      <List className={classes.listRoot}>
         {searchList.map((item) => (
           <ListItem key={item.foodItemId}>
             <ListItemText
@@ -74,7 +95,7 @@ const SearchFoodItems = () => {
               secondary={`$${item.price}`}
             />
             <ListItemSecondaryAction>
-              <IconButton>
+              <IconButton onClick={() => addFoodItem(item)}>
                 <PlusOneIcon />
                 <ArrowForwardIosIcon />
               </IconButton>

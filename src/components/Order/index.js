@@ -29,12 +29,31 @@ const Order = () => {
     resetFormControls,
   } = useForm(getFreshModelObject);
 
+  // Add food item to Order
+  const addFoodItem = (foodItem) => {
+    let tempOrderDetails = {
+      orderMasterId: values.orderMasterId,
+      orderDetailId: 0,
+      foodItemId: foodItem.foodItemId,
+      quantity: 1,
+      foodItemPrice: foodItem.foodItemPrice,
+      foodItemName: foodItem.foodItemName,
+    };
+
+    setValues({
+      ...values,
+      orderDetails: [...values.orderDetails, tempOrderDetails],
+    });
+  };
+
+  console.log("BBB", values);
+
   return (
     <>
       <OrderForm {...{ values, errors, handleInputChange }} />
       <Grid container>
         <Grid item xs={6}>
-          <SearchFoodItems />
+          <SearchFoodItems {...{ addFoodItem }} />
         </Grid>
         <Grid item xs={6}>
           <OrderedFoodItems />
