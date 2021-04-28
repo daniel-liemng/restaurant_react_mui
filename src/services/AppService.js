@@ -11,6 +11,7 @@ const foodList = [
   { foodItemId: 3, foodItemName: "Grilled Cheese Sandwich", price: 5.99 },
   { foodItemId: 4, foodItemName: "Steak Burger", price: 2.5 },
   { foodItemId: 5, foodItemName: "Smash Potatoes", price: 3.99 },
+  { foodItemId: 6, foodItemName: "Pork Soup", price: 2.99 },
 ];
 
 export const fetchAllCustomer = () => {
