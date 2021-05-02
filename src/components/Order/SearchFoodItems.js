@@ -50,7 +50,9 @@ const useStyles = makeStyles((theme) => ({
 const SearchFoodItems = (props) => {
   const classes = useStyles();
 
-  const { addFoodItem } = props;
+  const { values, setValues } = props;
+
+  let orderedFoodItems = values.orderDetails;
 
   const [foodItems, setFoodItems] = useState([]);
   const [searchKey, setSearchKey] = useState("");
@@ -68,11 +70,34 @@ const SearchFoodItems = (props) => {
     let tempFoodItems = [...foodItems];
 
     tempFoodItems = tempFoodItems.filter((item) => {
-      return item.foodItemName.toLowerCase().includes(searchKey.toLowerCase());
+      return (
+        item.foodItemName.toLowerCase().includes(searchKey.toLowerCase()) &&
+        // click on food item, disappear in this column and show in the other column
+        orderedFoodItems.every(
+          (foodItem) => foodItem.foodItemId !== item.foodItemId
+        )
+      );
     });
 
     setSearchList(tempFoodItems);
-  }, [searchKey]);
+  }, [searchKey, orderedFoodItems]);
+
+  // Add food item to Order Details
+  const addFoodItem = (foodItem) => {
+    let tempOrderDetails = {
+      orderMasterId: values.orderMasterId,
+      orderDetailId: 0,
+      foodItemId: foodItem.foodItemId,
+      quantity: 1,
+      foodItemPrice: foodItem.foodItemPrice,
+      foodItemName: foodItem.foodItemName,
+    };
+
+    setValues({
+      ...values,
+      orderDetails: [...values.orderDetails, tempOrderDetails],
+    });
+  };
 
   return (
     <>
