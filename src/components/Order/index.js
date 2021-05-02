@@ -34,7 +34,7 @@ const Order = () => {
 
   return (
     <>
-      <OrderForm {...{ values, errors, handleInputChange }} />
+      <OrderForm {...{ values, setValues, errors, handleInputChange }} />
       <Grid container>
         <Grid item xs={6}>
           <SearchFoodItems {...{ values, setValues }} />

@@ -89,7 +89,7 @@ const SearchFoodItems = (props) => {
       orderDetailId: 0,
       foodItemId: foodItem.foodItemId,
       quantity: 1,
-      foodItemPrice: foodItem.foodItemPrice,
+      foodItemPrice: foodItem.price,
       foodItemName: foodItem.foodItemName,
     };
 
@@ -114,7 +114,7 @@ const SearchFoodItems = (props) => {
       </Paper>
       <List className={classes.listRoot}>
         {searchList.map((item) => (
-          <ListItem key={item.foodItemId}>
+          <ListItem key={item.foodItemId} onClick={() => addFoodItem(item)}>
             <ListItemText
               primary={item.foodItemName}
               secondary={`$${item.price}`}

@@ -16,6 +16,7 @@ import ReplayIcon from "@material-ui/icons/Replay";
 import ReorderIcon from "@material-ui/icons/Reorder";
 
 import * as AppService from "../../services/AppService";
+import { roundTo2Decimal } from "../../utils";
 
 // const customerList = [
 //   { id: 0, title: "Select" },
@@ -65,7 +66,7 @@ const OrderForm = (props) => {
 
   const classes = useStyles();
 
-  const { values, errors, handleInputChange } = props;
+  const { values, setValues, errors, handleInputChange } = props;
 
   const [customerList, setCustomerList] = useState([]);
 
@@ -85,7 +86,18 @@ const OrderForm = (props) => {
     setCustomerList(cusList);
   }, []);
 
-  console.log("A", customerList);
+  // Calculate GrandTotal in form when orderDetails changes
+  // orderDetails is [] => JSON.stringify
+  useEffect(() => {
+    let gTotal = values.orderDetails.reduce(
+      (acc, item) => (acc += item.quantity * item.foodItemPrice),
+      0
+    );
+
+    setValues({ ...values, gTotal: roundTo2Decimal(gTotal) });
+  }, [JSON.stringify(values.orderDetails)]);
+
+  console.log("A", values);
 
   return (
     <Form>

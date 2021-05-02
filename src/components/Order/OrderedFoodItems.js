@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 
 import {
-  Box,
   Button,
   ButtonGroup,
   IconButton,
@@ -10,11 +9,50 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Paper,
-  Typography,
+  makeStyles,
 } from "@material-ui/core";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
+import { roundTo2Decimal } from "../../utils";
+
+const useStyles = makeStyles((theme) => ({
+  paperRoot: {
+    margin: "15px 0px",
+    "&:hover": {
+      cursor: "pointer",
+    },
+    "&:hover $deleteButton": {
+      display: "block",
+    },
+  },
+  buttonGroup: {
+    backgroundColor: "#e3e3e3",
+    borderRadius: 8,
+    "& .MuiButtonBase-root": {
+      border: "none",
+      minWidth: "25px",
+      padding: "1px",
+    },
+    "& button:nth-child(2)": {
+      fontSize: "1.2em",
+      color: "#000",
+    },
+  },
+  deleteButton: {
+    display: "none",
+    "& .MuiButtonBase-root": {
+      color: "#e81719",
+    },
+  },
+  totalPerItem: {
+    fontWeight: "bolder",
+    fontSize: "1.2em",
+    margin: "0px 10px",
+  },
+}));
 
 const OrderedFoodItems = (props) => {
+  const classes = useStyles();
+
   const { values, setValues } = props;
 
   let orderedFoodItems = values.orderDetails;
@@ -42,7 +80,7 @@ const OrderedFoodItems = (props) => {
   return (
     <List>
       {orderedFoodItems.map((item, index) => (
-        <Paper key={index}>
+        <Paper key={index} className={classes.paperRoot}>
           <ListItem>
             <ListItemText
               primary={item.foodItemName}
@@ -55,11 +93,14 @@ const OrderedFoodItems = (props) => {
               }}
               secondary={
                 <>
-                  <ButtonGroup size='small'>
+                  <ButtonGroup size='small' className={classes.buttonGroup}>
                     <Button onClick={() => updateQuantity(index, -1)}>-</Button>
                     <Button disabled>{item.quantity}</Button>
                     <Button onClick={() => updateQuantity(index, 1)}>+</Button>
                   </ButtonGroup>
+                  <span className={classes.totalPerItem}>{`$${roundTo2Decimal(
+                    item.quantity * item.foodItemPrice
+                  )}`}</span>
                 </>
               }
               secondaryTypographyProps={{
@@ -67,7 +108,7 @@ const OrderedFoodItems = (props) => {
               }}
             />
 
-            <ListItemSecondaryAction>
+            <ListItemSecondaryAction className={classes.deleteButton}>
               <IconButton
                 disableRipple
                 onClick={() => removeFoodItem(index, item.orderDetailsId)}
